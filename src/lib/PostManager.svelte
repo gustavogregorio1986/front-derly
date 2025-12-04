@@ -38,14 +38,15 @@
   <textarea bind:value={content} placeholder="Conteúdo"></textarea>
 
   {#if users.length > 0}
-    <select bind:value={authorId}>
-      {#each users as u}
-        <option value={u.id}>{u.name}</option>
-      {/each}
-    </select>
-  {:else}
-    <p>Carregando autores...</p>
-  {/if}
+  <label for="author">Autor</label>
+  <select id="author" bind:value={authorId}>
+    {#each users as u}
+      <option value={u.id}>{u.name}</option>
+    {/each}
+  </select>
+{:else}
+  <p>Carregando autores...</p>
+{/if}
 
   <button type="submit">Salvar</button>
 </form>
