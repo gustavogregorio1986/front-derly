@@ -10,3 +10,12 @@ export async function getPosts(authorId?: number) {
   const r = await fetch(url);
   return r.json();
 }
+
+export async function createPost(data: { title: string; content: string; authorId: number }) {
+  const r = await fetch(`${BASE}/posts`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  });
+  return r.json();
+}

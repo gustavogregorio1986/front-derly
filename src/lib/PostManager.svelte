@@ -23,7 +23,7 @@
     await createPost({ title, content, authorId });
     title = '';
     content = '';
-    await loadPosts(); // atualiza lista após criar
+    await loadPosts();
   }
 
   function getAuthorName(id: number) {
@@ -37,11 +37,15 @@
   <input bind:value={title} placeholder="Título" />
   <textarea bind:value={content} placeholder="Conteúdo"></textarea>
 
-  <select bind:value={authorId}>
-    {#each users as u}
-      <option value={u.id}>{u.name}</option>
-    {/each}
-  </select>
+  {#if users.length > 0}
+    <select bind:value={authorId}>
+      {#each users as u}
+        <option value={u.id}>{u.name}</option>
+      {/each}
+    </select>
+  {:else}
+    <p>Carregando autores...</p>
+  {/if}
 
   <button type="submit">Salvar</button>
 </form>
@@ -60,20 +64,92 @@
 </div>
 
 <style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f4f6f8;
+    margin: 0;
+    padding: 2rem;
+    color: #333;
+  }
+
+  h2 {
+    margin-bottom: 1rem;
+    color: #222;
+  }
+
   form {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 1rem;
+    padding: 1.5rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #fff;
+    max-width: 500px;
     margin-bottom: 2rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
   }
+
+  input, textarea, select {
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-family: inherit;
+    width: 100%;
+  }
+
+  textarea {
+    min-height: 100px;
+    resize: vertical;
+  }
+
+  button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 0.75rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.3s ease;
+  }
+
+  button:hover {
+    background: #0056b3;
+  }
+
   .cards {
     display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 1rem;
   }
+
   .card {
-    border: 1px solid #ccc;
+    border: 1px solid #ddd;
+    border-radius: 8px;
     padding: 1rem;
-    border-radius: 6px;
-    background: #fafafa;
+    background: #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    transition: transform 0.2s ease;
+  }
+
+  .card:hover {
+    transform: translateY(-3px);
+  }
+
+  .card h3 {
+    margin: 0 0 0.5rem;
+    color: #222;
+  }
+
+  .card p {
+    margin: 0 0 0.75rem;
+    color: #555;
+  }
+
+  .card small {
+    color: #888;
+    font-size: 0.85rem;
   }
 </style>
