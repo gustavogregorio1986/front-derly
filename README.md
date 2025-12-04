@@ -1,1 +1,3 @@
-Script: npm run dev
+Scripts: 
+   npm install 
+   npm run dev
