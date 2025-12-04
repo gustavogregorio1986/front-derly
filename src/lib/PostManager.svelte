@@ -8,6 +8,7 @@
   let title = '';
   let content = '';
   let authorId: number;
+  let search = ''; // campo de busca
 
   onMount(async () => {
     users = await getUsers();
@@ -30,6 +31,13 @@
     const user = users.find(u => u.id === id);
     return user ? user.name : 'Desconhecido';
   }
+
+  // Filtra posts conforme o texto digitado
+  $: filteredPosts = posts.filter(p =>
+    p.title.toLowerCase().includes(search.toLowerCase()) ||
+    p.content.toLowerCase().includes(search.toLowerCase()) ||
+    getAuthorName(p.authorId).toLowerCase().includes(search.toLowerCase())
+  );
 </script>
 
 <h2>Criar Post</h2>
@@ -38,24 +46,32 @@
   <textarea bind:value={content} placeholder="Conteúdo"></textarea>
 
   {#if users.length > 0}
-  <label for="author">Autor</label>
-  <select id="author" bind:value={authorId}>
-    {#each users as u}
-      <option value={u.id}>{u.name}</option>
-    {/each}
-  </select>
-{:else}
-  <p>Carregando autores...</p>
-{/if}
+    <label for="author">Autor</label>
+    <select id="author" bind:value={authorId}>
+      {#each users as u}
+        <option value={u.id}>{u.name}</option>
+      {/each}
+    </select>
+  {:else}
+    <p>Carregando autores...</p>
+  {/if}
 
   <button type="submit">Salvar</button>
 </form>
 
 <hr />
 
+<!-- Campo de busca -->
+<input
+  type="text"
+  placeholder="Buscar posts..."
+  bind:value={search}
+  style="margin-bottom: 1rem; padding: 0.75rem; width: 100%; border: 1px solid #ccc; border-radius: 6px;"
+/>
+
 <h2>Posts</h2>
 <div class="cards">
-  {#each posts as p}
+  {#each filteredPosts as p}
     <div class="card">
       <h3>{p.title}</h3>
       <p>{p.content}</p>
